@@ -14,8 +14,6 @@ namespace App.Scripts.Scenes.SceneFillwords.States.Setup
         private readonly IProviderFillwordLevel _providerFillwordLevel;
         private readonly IServiceLevelSelection _serviceLevelSelection;
         private readonly ViewGridLetters _viewGridLetters;
-        private readonly ConfigLevelSelection _configLevelSelection;
-
         public HandlerSetupFillwords(IProviderFillwordLevel providerFillwordLevel,
             IServiceLevelSelection serviceLevelSelection,
             ViewGridLetters viewGridLetters, ContainerGrid containerGrid)
@@ -29,7 +27,7 @@ namespace App.Scripts.Scenes.SceneFillwords.States.Setup
         public Task Process()
         {
             GridFillWords model=null;
-            for (int i =_serviceLevelSelection.CurrentLevelIndex; i<_configLevelSelection.TotalLevelCount;i++) {
+            for (int i =_serviceLevelSelection.CurrentLevelIndex; ;i++) {
                 try
                 {
                     model = _providerFillwordLevel.LoadModel(_serviceLevelSelection.CurrentLevelIndex);

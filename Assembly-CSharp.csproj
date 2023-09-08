@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{873CB76C-D80B-A0D2-540E-2619F66152E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -57,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\App\Scripts\Libs\SceneManagement\Config\ConfigScenes.cs" />
+    <Compile Include="Assets\App\Scripts\Scenes\SceneFillwords\Features\ProviderLevel\Validation.cs" />
     <Compile Include="Assets\App\Scripts\Scenes\SceneFillwords\Features\FillwordModels\View\ViewGridLetters\ViewGridLetters.cs" />
     <Compile Include="Assets\App\Scripts\Infrastructure\SharedViews\ItemSelector\IViewItemSelector.cs" />
     <Compile Include="Assets\App\Scripts\Infrastructure\LevelSelection\IServiceLevelSelection.cs" />

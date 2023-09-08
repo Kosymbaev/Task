@@ -3,27 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using App.Scripts.Scenes.SceneFillwords.Features.FillwordModels;
+using Assets.App.Scripts.Scenes.SceneFillwords.Features.FillwordModels;
 
 namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
 {
     public class ProviderFillwordLevel : IProviderFillwordLevel
     {
-        private int MaxIntInCollection(List<int[]> IndexOfWords)
-        {
-            int MaxIndex = 0;
-            foreach (var item in IndexOfWords)
-            {
-                for (int i = 1; i < item.Length; i++)
-                {
-                    if (item[i] > MaxIndex)
-                    {
-                        MaxIndex = item[i];
-                    }
-                }
-            }
-            return MaxIndex;
-        }
-
         private string ReadingLine(string path, int index)
         {
             string result;
@@ -99,6 +84,7 @@ namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
             string curentPath = Directory.GetCurrentDirectory();
             string indexes, pathToPack_0 = "D:\\Task\\Assets\\App\\Resources\\Fillwords\\pack_0.txt";
             string pathToWordsList = "D:\\Task\\Assets\\App\\Resources\\Fillwords\\words_list.txt";
+
             try
             {
                 indexes = ReadingLine(pathToPack_0, index);
@@ -107,13 +93,14 @@ namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
             {
                 throw ex;
             }
+
             List<int[]> IndexOfWords = ParseOfLevels(indexes);
-            int MaxIndex = MaxIntInCollection(IndexOfWords);
-            int SizeOfGrid = (int)Math.Pow(MaxIndex + 1, 0.5);
-            if (SizeOfGrid * SizeOfGrid - (MaxIndex + 1) != 0)
+            var valid = new Validation(IndexOfWords);
+            if (valid.IsValid())
             {
                 return null;
             }
+            int SizeOfGrid = valid.getSizeOfGrid();
             var Size = new Vector2Int(SizeOfGrid, SizeOfGrid);
             var grid = new GridFillWords(Size);
             foreach (var item in IndexOfWords)
@@ -138,7 +125,6 @@ namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
                 }
             }
             return grid;
-
             //напиши реализацию не меняя сигнатуру функции
         }
     }
