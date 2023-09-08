@@ -26,17 +26,12 @@ namespace App.Scripts.Scenes.SceneFillwords.States.Setup
 
         public Task Process()
         {
-            GridFillWords model=null;
-            for (int i =_serviceLevelSelection.CurrentLevelIndex; ;i++) {
-                try
-                {
-                    model = _providerFillwordLevel.LoadModel(_serviceLevelSelection.CurrentLevelIndex);
-                }
-                catch
-                {
-                    continue;
-                }
-                break;
+
+            GridFillWords model = null;
+            for (int i=_serviceLevelSelection.CurrentLevelIndex; ;i++) { 
+                model = _providerFillwordLevel.LoadModel(i);
+                if (model != null) break;
+                else _serviceLevelSelection.UpdateSelectedLevel(i+1);
             }
             _viewGridLetters.UpdateItems(model);
             _containerGrid.SetupGrid(model, _serviceLevelSelection.CurrentLevelIndex);

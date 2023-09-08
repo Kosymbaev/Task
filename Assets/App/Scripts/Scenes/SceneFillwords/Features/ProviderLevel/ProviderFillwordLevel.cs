@@ -102,17 +102,16 @@ namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
             }
             int SizeOfGrid = valid.getSizeOfGrid();
             var Size = new Vector2Int(SizeOfGrid, SizeOfGrid);
+
             var grid = new GridFillWords(Size);
             foreach (var item in IndexOfWords)
             {
-
                 string Word = ReadingLine(pathToWordsList, item[0]);
                 for (int k = 1; k < item.Length; k++)
                 {
                     int i = 0, j = 0;
                     for (int l = 0; l < item[k]; l++)
                     {
-
                         j++;
                         if (j == SizeOfGrid)
                         {
