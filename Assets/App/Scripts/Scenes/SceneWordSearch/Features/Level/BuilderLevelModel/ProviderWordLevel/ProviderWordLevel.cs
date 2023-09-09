@@ -15,7 +15,6 @@ namespace App.Scripts.Scenes.SceneWordSearch.Features.Level.BuilderLevelModel.Pr
             levelInfo = JsonUtility.FromJson<LevelInfo>(ContainJson);
             return levelInfo;
             //напиши реализацию не меняя сигнатуру функции
-            throw new NotImplementedException();
         }
     }
 }

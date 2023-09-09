@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/App/Scenes/SceneFillwords.unity
+- path: Assets/App/Scenes/SceneWordSearch.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
