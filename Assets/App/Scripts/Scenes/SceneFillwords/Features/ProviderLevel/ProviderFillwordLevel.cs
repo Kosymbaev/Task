@@ -81,9 +81,8 @@ namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
 
         public GridFillWords LoadModel(int index)
         {
-            string curentPath = Directory.GetCurrentDirectory();
-            string indexes, pathToPack_0 = "D:\\Task\\Assets\\App\\Resources\\Fillwords\\pack_0.txt";
-            string pathToWordsList = "D:\\Task\\Assets\\App\\Resources\\Fillwords\\words_list.txt";
+            string indexes, pathToPack_0 = Directory.GetCurrentDirectory() + "\\Assets\\App\\Resources\\Fillwords\\pack_0.txt";
+            string pathToWordsList = Directory.GetCurrentDirectory()+"\\Assets\\App\\Resources\\Fillwords\\words_list.txt";
 
             try
             {
@@ -106,6 +105,7 @@ namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
             var grid = new GridFillWords(Size);
             foreach (var item in IndexOfWords)
             {
+
                 string Word = ReadingLine(pathToWordsList, item[0]);
                 for (int k = 1; k < item.Length; k++)
                 {

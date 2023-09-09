@@ -24,6 +24,7 @@ namespace Assets.App.Scripts.Scenes.SceneFillwords.Features.FillwordModels
             findMaxIndex(_IndexOfWords);
             _CountOfIndexes = countIndexes(_IndexOfWords);
             var arrayOfNummbers = new int[_CountOfIndexes];
+            AllNumbers = arrayOfNummbers;
             _SizeOfGrid = (int) Math.Pow(_CountOfIndexes,0.5);
             SetAllNumbers();
             IsValidNumbers();
