@@ -274,10 +274,101 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
         }
         public List<Vector2Int> getPathForPon(Vector2Int from, Vector2Int to, ChessGrid grid, ChessUnitColor color)
         {
-            return null;
+            Dictionary<Vector2Int, Vector2Int> history = new Dictionary<Vector2Int, Vector2Int>();
+            List<Vector2Int> result = new();
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            Stack<Vector2Int> recovery = new Stack<Vector2Int>();
+            queue.Enqueue(from);
+            if (color.Equals(ChessUnitColor.White))
+            {
+                for (; !queue.IsUnityNull();)
+                {
+                    var currentCell = queue.Dequeue();
+                    if (currentCell==to)
+                    {
+                        recovery.Push(currentCell);
+                        break;
+                    }
+                    if (currentCell.y+1<8)
+                    {
+                        var buffer = new Vector2Int(currentCell.x,currentCell.y+1);
+                        var reserved = grid.Get(buffer);
+                        if (reserved == null)
+                        {
+                            queue.Enqueue(buffer);
+                            history.Add(currentCell, buffer);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (; !queue.IsUnityNull();)
+                {
+                    var currentCell = queue.Dequeue();
+                    if (currentCell == to)
+                    {
+                        recovery.Push(currentCell);
+                        break;
+                    }
+                    if (currentCell.y - 1 > 0)
+                    {
+                        var buffer = new Vector2Int(currentCell.x, currentCell.y - 1);
+                        var reserved = grid.Get(buffer);
+                        if (reserved == null)
+                        {
+                            queue.Enqueue(buffer);
+                            history.Add(currentCell, buffer);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            result = recoveryPath(recovery, history, from);
+            return result;
         }
         public List<Vector2Int> getPathForKing(Vector2Int from, Vector2Int to, ChessGrid grid)
         {
+            int[] horizontal = { 1, 1, 1, 0, 0, -1, -1, -1 };
+            int[] vertical = { 1, 0, -1, 1, -1, 1, 0, -1 };
+            Dictionary<Vector2Int, Vector2Int> history = new Dictionary<Vector2Int, Vector2Int>();
+            List<Vector2Int> result = new();
+            Dictionary<Vector2Int, bool> visitedCell = new Dictionary<Vector2Int, bool>();
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            Stack<Vector2Int> recovery = new Stack<Vector2Int>();
+            queue.Enqueue(from);
+            visitedCell.Add(from, true);
+            for (; !queue.IsUnityNull();)
+            {
+                var currentCell = queue.Dequeue();
+                if (currentCell == to)
+                {
+                    recovery.Push(currentCell);
+                    break;
+                }
+                for (int i = 0; i < 8; i++)
+                {
+                    var buffer = new Vector2Int(currentCell.x + horizontal[i], currentCell.y + vertical[i]);
+                    if (buffer.x < 8 && buffer.x > -1 && buffer.y > -1 && buffer.y < 8)
+                    {
+                        var reserved = grid.Get(buffer);
+                        bool check = visitedCell.TryGetValue(buffer, out _);
+                        if (!check && reserved == null)
+                        {
+                            queue.Enqueue(buffer);
+                            history.Add(buffer, currentCell);
+                            visitedCell.Add(buffer, true);
+                        }
+                    }
+                }
+            }
             return null;
         }
         public List<Vector2Int> getPathForQueen(Vector2Int from, Vector2Int to, ChessGrid grid)
