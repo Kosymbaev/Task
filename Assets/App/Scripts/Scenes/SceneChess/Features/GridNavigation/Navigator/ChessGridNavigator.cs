@@ -413,7 +413,7 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                     }
                 }
 
-                for (Vector2Int i = dl; i != ur; i.x++, i.y++)
+                for (Vector2Int i = dl; ; i.x++, i.y++)
                 {
                     var reserved = grid.Get(i);
                     bool check = visitedCell.TryGetValue(i, out _);
@@ -423,9 +423,13 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                         history.Add(i, currentCell);
                         visitedCell.Add(i, true);
                     }
+                    if (i == ur)
+                    {
+                        break;
+                    }
                 }
 
-                for (Vector2Int i = ul; i != dr; i.x++, i.y--)
+                for (Vector2Int i = ul; ; i.x++, i.y--)
                 {
                     var reserved = grid.Get(i);
                     bool check = visitedCell.TryGetValue(i, out _);
@@ -434,6 +438,10 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                         queue.Enqueue(i);
                         history.Add(i, currentCell);
                         visitedCell.Add(i, true);
+                    }
+                    if (i == dr)
+                    {
+                        break;
                     }
                 }
 
