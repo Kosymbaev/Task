@@ -9,64 +9,65 @@ namespace Assets.App.Scripts.Scenes.SceneFillwords.Features.FillwordModels
 {
     public class Validation
     {
-        private List<int[]> _IndexOfWords;
-        private int _SizeOfGrid;
-        private int _MaxNumber;
-        private bool _IsValid;
-        private int[] AllNumbers;
-        private int _CountOfIndexes;
-        public Validation(List<int[]> IndexOfWords)
+        private List<int[]> _indexOfWords;
+        private int _sizeOfGrid;
+        private int _maxNumber;
+        private bool _isValid;
+        private int[] allNumbers;
+        private int _countOfIndexes;
+        public Validation(List<int[]> indexOfWords)
         {
-            _IsValid = true;
-            _IndexOfWords = IndexOfWords;
-            _SizeOfGrid = 0;
-            _MaxNumber = 0;
-            findMaxIndex(_IndexOfWords);
-            _CountOfIndexes = countIndexes(_IndexOfWords);
-            var arrayOfNummbers = new int[_CountOfIndexes];
-            AllNumbers = arrayOfNummbers;
-            _SizeOfGrid = (int) Math.Pow(_CountOfIndexes,0.5);
+            _isValid = true;
+            _indexOfWords = indexOfWords;
+            _sizeOfGrid = 0;
+            _maxNumber = 0;
+            FindMaxIndex(_indexOfWords);
+            _countOfIndexes = CountIndexes(_indexOfWords);
+            var arrayOfNummbers = new int[_countOfIndexes];
+            allNumbers = arrayOfNummbers;
+            _sizeOfGrid = (int)Math.Pow(_countOfIndexes, 0.5);
+
             SetAllNumbers();
             IsValidNumbers();
             IsValidSize();
         }
         private void IsValidNumbers()
         {
-            for (int i = 0; i < AllNumbers.Length - 1; i++)
+            for (int i = 0; i < allNumbers.Length - 1; i++)
             {
-                for (int j = i + 1; j < AllNumbers.Length; j++)
+                for (int j = i + 1; j < allNumbers.Length; j++)
                 {
-                    if (AllNumbers[i] == AllNumbers[j])
+                    if (allNumbers[i] == allNumbers[j])
                     {
-                        _IsValid = false;
+                        _isValid = false;
                     }
                 }
             }
-            if (_CountOfIndexes != _MaxNumber-1)
+            if (_countOfIndexes != _maxNumber-1)
             {
-                _IsValid = false;
+                _isValid = false;
             }
         }
         private void IsValidSize()
         {
-            if (Math.Pow(_SizeOfGrid, 2) - _CountOfIndexes != 0)
+            if (Math.Pow(_sizeOfGrid, 2) - _countOfIndexes != 0)
             {
-                _IsValid = false;
+                _isValid = false;
             }
         }
         private void SetAllNumbers()
         {
             int l = 0;
-            foreach (var item in _IndexOfWords)
+            foreach (var item in _indexOfWords)
             {
                 for (int i = 1; i < item.Length; i++)
                 {
-                    AllNumbers[l] = item[i];
+                    allNumbers[l] = item[i];
                     l++;
                 }
             }
         }
-        private int countIndexes(List<int[]> IndexOfWords)
+        private int CountIndexes(List<int[]> IndexOfWords)
         {
             int NumbersOfIndexes = 0;
             foreach (var item in IndexOfWords)
@@ -79,26 +80,26 @@ namespace Assets.App.Scripts.Scenes.SceneFillwords.Features.FillwordModels
             return NumbersOfIndexes;
         }
 
-        private void findMaxIndex(List<int[]> IndexOfWords)
+        private void FindMaxIndex(List<int[]> IndexOfWords)
         {
             foreach (var item in IndexOfWords)
             {
                 for (int i = 1; i < item.Length; i++)
                 {
-                    if (_MaxNumber < item[i])
+                    if (_maxNumber < item[i])
                     {
-                        _MaxNumber = item[i];
+                        _maxNumber = item[i];
                     }
                 }
             }
         }
         public bool IsValid()
         {
-            return _IsValid;
+            return _isValid;
         }
-        public int getSizeOfGrid()
+        public int GetSizeOfGrid()
         {
-            return _SizeOfGrid;
+            return _sizeOfGrid;
         }
     }
 }

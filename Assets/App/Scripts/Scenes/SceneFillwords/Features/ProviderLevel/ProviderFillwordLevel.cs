@@ -93,38 +93,37 @@ namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
                 throw ex;
             }
 
-            List<int[]> IndexOfWords = ParseOfLevels(indexes);
-            var valid = new Validation(IndexOfWords);
+            List<int[]> indexOfWords = ParseOfLevels(indexes);
+            var valid = new Validation(indexOfWords);
             if (valid.IsValid())
             {
                 return null;
             }
-            int SizeOfGrid = valid.getSizeOfGrid();
-            var Size = new Vector2Int(SizeOfGrid, SizeOfGrid);
+            int sizeOfGrid = valid.GetSizeOfGrid();
+            var size = new Vector2Int(sizeOfGrid, sizeOfGrid);
 
-            var grid = new GridFillWords(Size);
-            foreach (var item in IndexOfWords)
+            var grid = new GridFillWords(size);
+            foreach (var item in indexOfWords)
             {
-
-                string Word = ReadingLine(pathToWordsList, item[0]);
+                string word = ReadingLine(pathToWordsList, item[0]);
                 for (int k = 1; k < item.Length; k++)
                 {
                     int i = 0, j = 0;
                     for (int l = 0; l < item[k]; l++)
                     {
                         j++;
-                        if (j == SizeOfGrid)
+                        if (j == sizeOfGrid)
                         {
                             i++;
                             j = 0;
                         }
                     }
-                    var Char = new CharGridModel(Word[k - 1]);
-                    grid.Set(i, j, Char);
+
+                    var letter = new CharGridModel(word[k - 1]);
+                    grid.Set(i, j, letter);
                 }
             }
             return grid;
-            //напиши реализацию не меняя сигнатуру функции
         }
     }
 }

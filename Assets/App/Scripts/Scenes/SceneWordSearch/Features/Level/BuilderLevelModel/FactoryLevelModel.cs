@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using App.Scripts.Libs.Factory;
 using App.Scripts.Scenes.SceneWordSearch.Features.Level.Models.Level;
@@ -26,19 +25,20 @@ namespace App.Scripts.Scenes.SceneWordSearch.Features.Level.BuilderLevelModel
             foreach (var word in words)
             {
                 string bufferword=word;
-                for (int i=0; i<bufferword.Length;i++)
+                for (int i = 0; i < bufferword.Length; i++)
                 {
                     int countOfLetter = 0;
-                    for (int j=i+1; j<bufferword.Length; j++)
+                    for (int j = i + 1; j < bufferword.Length; j++)
                     {
                         if (bufferword[i] == bufferword[j])
                         {
                             countOfLetter++;
-                            bufferword.Remove(j,1);
+                            bufferword.Remove(j, 1);
                             j--;
                         }
                     }
-                    bool SucsessAdd=dict.TryAdd(bufferword[i], countOfLetter+1);
+
+                    bool SucsessAdd = dict.TryAdd(bufferword[i], countOfLetter + 1);
                     if (!SucsessAdd)
                     {
                         if (dict[bufferword[i]] < countOfLetter)
@@ -54,18 +54,16 @@ namespace App.Scripts.Scenes.SceneWordSearch.Features.Level.BuilderLevelModel
                     i--;
                 }
             }
-            List<char> result = new List<char>();
+            var result = new List<char>();
             foreach (var letter in letters)
             {
                 int count = dict[letter];
-                for (int i=0;i<count;i++)
+                for (int i = 0; i < count; i++)
                 {
                     result.Add(letter);
                 }
             }
             return result;
-            //напиши реализацию не меняя сигнатуру функции
-            throw new NotImplementedException();
         }
     }
 }
