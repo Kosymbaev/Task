@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using App.Scripts.Scenes.SceneChess.Features.ChessField.GridMatrix;
 using App.Scripts.Scenes.SceneChess.Features.ChessField.Types;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
 {
@@ -17,13 +15,14 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
             {
                 if (currentCell.y - i >= 0 && currentCell.x + i <= 7 && dr == currentCell)
                 {
-                    if (grid.Get(currentCell.y + i, currentCell.x - i) != null || currentCell.y - i == 0 || currentCell.x + i == 7)
+                    if (grid.Get(currentCell.y - i, currentCell.x + i) != null || currentCell.y - i == 0 || currentCell.x + i == 7)
                     {
                         dr = new Vector2Int(currentCell.x + i, currentCell.y - i);
                     }
                 }
                 else break;
             }
+
             return dr;
         }
 
@@ -34,7 +33,7 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
             {
                 if (currentCell.y + i <= 7 && currentCell.x - i >= 0)
                 {
-                    if (grid.Get(currentCell.y - i, currentCell.x + i) != null || currentCell.y + i == 7 || currentCell.x - i == 0)
+                    if (grid.Get(currentCell.y + i, currentCell.x - i) != null || currentCell.y + i == 7 || currentCell.x - i == 0)
                     {
                         ul = new Vector2Int(currentCell.x - i, currentCell.y + i);
                     }
@@ -146,7 +145,7 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
             }
             return left;
         }
-        private List<Vector2Int> recoveryPath(Stack<Vector2Int> recovery, Dictionary<Vector2Int, Vector2Int> history, Vector2Int from)
+        private List<Vector2Int> RecoveryPath(Stack<Vector2Int> recovery, Dictionary<Vector2Int, Vector2Int> history, Vector2Int from)
         {
             List<Vector2Int> result = new();
             if (!recovery.IsUnityNull())
@@ -162,7 +161,7 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
             }
             return result;
         }
-        public List<Vector2Int> getPathForKnight(Vector2Int from, Vector2Int to, ChessGrid grid)
+        public List<Vector2Int> GetPathForKnight(Vector2Int from, Vector2Int to, ChessGrid grid)
         {
             int[] horizontal = { 2, 2, 1, 1, -2, -2, -1, -1 };
             int[] vertical = { 1, -1, 2, -2, 1, -1, 2, -2 };
@@ -199,10 +198,10 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                 }
             }
 
-            return recoveryPath(recovery, history, from);
+            return RecoveryPath(recovery, history, from);
         }
 
-        public List<Vector2Int> getPathForRook(Vector2Int from, Vector2Int to, ChessGrid grid)
+        public List<Vector2Int> GetPathForRook(Vector2Int from, Vector2Int to, ChessGrid grid)
         {
             Dictionary<Vector2Int, Vector2Int> history = new Dictionary<Vector2Int, Vector2Int>();
             Dictionary<Vector2Int, bool> visitedCell = new Dictionary<Vector2Int, bool>();
@@ -253,10 +252,10 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                 }
             }
 
-            return recoveryPath(recovery, history, from);
+            return RecoveryPath(recovery, history, from);
         }
 
-        public List<Vector2Int> getPathForPon(Vector2Int from, Vector2Int to, ChessGrid grid, ChessUnitColor color)
+        public List<Vector2Int> GetPathForPon(Vector2Int from, Vector2Int to, ChessGrid grid, ChessUnitColor color)
         {
 
             Dictionary<Vector2Int, Vector2Int> history = new Dictionary<Vector2Int, Vector2Int>();
@@ -317,11 +316,11 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                 }
             }
 
-            return recoveryPath(recovery, history, from);
+            return RecoveryPath(recovery, history, from);
 
         }
 
-        public List<Vector2Int> getPathForKing(Vector2Int from, Vector2Int to, ChessGrid grid)
+        public List<Vector2Int> GetPathForKing(Vector2Int from, Vector2Int to, ChessGrid grid)
         {
             int[] horizontal = { 1, 1, 1, 0, 0, -1, -1, -1 };
             int[] vertical = { 1, 0, -1, 1, -1, 1, 0, -1 };
@@ -358,10 +357,10 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                 }
             }
 
-            return recoveryPath(recovery, history, from);
+            return RecoveryPath(recovery, history, from);
         }
 
-        public List<Vector2Int> getPathForQueen(Vector2Int from, Vector2Int to, ChessGrid grid)
+        public List<Vector2Int> GetPathForQueen(Vector2Int from, Vector2Int to, ChessGrid grid)
         {
             Dictionary<Vector2Int, Vector2Int> history = new Dictionary<Vector2Int, Vector2Int>();
             Dictionary<Vector2Int, bool> visitedCell = new Dictionary<Vector2Int, bool>();
@@ -373,12 +372,12 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
             while (!queue.IsUnityNull())
             {
                 var currentCell = queue.Dequeue();
+
                 if (currentCell == to)
                 {
                     recovery.Push(currentCell);
                     break;
                 }
-
                 int left = GetLeft(currentCell, grid);
                 int right = GetRight(currentCell, grid);
                 int down = GetDown(currentCell, grid);
@@ -414,7 +413,7 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                     }
                 }
 
-                for (Vector2Int i = dl; i != ur;i =new Vector2Int(i.x++, i.y++))
+                for (Vector2Int i = dl; i != ur; i.x++, i.y++)
                 {
                     var reserved = grid.Get(i);
                     bool check = visitedCell.TryGetValue(i, out _);
@@ -426,7 +425,7 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
                     }
                 }
 
-                for (Vector2Int i = ul; i != dr; i = new Vector2Int(i.x++, i.y--))
+                for (Vector2Int i = ul; i != dr; i.x++, i.y--)
                 {
                     var reserved = grid.Get(i);
                     bool check = visitedCell.TryGetValue(i, out _);
@@ -440,10 +439,10 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
 
             }
 
-            return null;
+            return RecoveryPath(recovery, history, from);
         }
 
-        public List<Vector2Int> getPathForBishop(Vector2Int from, Vector2Int to, ChessGrid grid)
+        public List<Vector2Int> GetPathForBishop(Vector2Int from, Vector2Int to, ChessGrid grid)
         {
             return null;
         }
@@ -454,28 +453,28 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
             {
                 case ChessUnitType.Bishop:
                     {
-                        return getPathForBishop(from, to, grid);
+                        return GetPathForBishop(from, to, grid);
                     }
                 case ChessUnitType.Rook:
                     {
-                        return getPathForRook(from, to, grid);
+                        return GetPathForRook(from, to, grid);
                     }
                 case ChessUnitType.Pon:
                     {
                         var color = grid.Get(from).PieceModel.Color;
-                        return getPathForPon(from, to, grid, color);
+                        return GetPathForPon(from, to, grid, color);
                     }
                 case ChessUnitType.Queen:
                     {
-                        return getPathForQueen(from, to, grid);
+                        return GetPathForQueen(from, to, grid);
                     }
                 case ChessUnitType.King:
                     {
-                        return getPathForKing(from, to, grid);
+                        return GetPathForKing(from, to, grid);
                     }
                 case ChessUnitType.Knight:
                     {
-                        return getPathForKnight(from, to, grid);
+                        return GetPathForKnight(from, to, grid);
                     }
             }
             return null;
