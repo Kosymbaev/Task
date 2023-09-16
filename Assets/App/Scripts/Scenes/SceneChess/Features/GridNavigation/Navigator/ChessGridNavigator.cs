@@ -452,7 +452,61 @@ namespace App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator
 
         public List<Vector2Int> GetPathForBishop(Vector2Int from, Vector2Int to, ChessGrid grid)
         {
-            return null;
+            Dictionary<Vector2Int, Vector2Int> history = new Dictionary<Vector2Int, Vector2Int>();
+            Dictionary<Vector2Int, bool> visitedCell = new Dictionary<Vector2Int, bool>();
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            Stack<Vector2Int> recovery = new Stack<Vector2Int>();
+
+            queue.Enqueue(from);
+            visitedCell.Add(from, true);
+            while (!queue.IsUnityNull())
+            {
+                var currentCell = queue.Dequeue();
+
+                if (currentCell == to)
+                {
+                    recovery.Push(currentCell);
+                    break;
+                }
+
+                Vector2Int dl = GetDL(currentCell, grid);
+                Vector2Int ur = GetUR(currentCell, grid);
+                Vector2Int dr = GetDR(currentCell, grid);
+                Vector2Int ul = GetUL(currentCell, grid);
+
+                for (Vector2Int i = dl; ; i.x++, i.y++)
+                {
+                    var reserved = grid.Get(i);
+                    bool check = visitedCell.TryGetValue(i, out _);
+                    if (!check && reserved == null)
+                    {
+                        queue.Enqueue(i);
+                        history.Add(i, currentCell);
+                        visitedCell.Add(i, true);
+                    }
+                    if (i == ur)
+                    {
+                        break;
+                    }
+                }
+
+                for (Vector2Int i = ul; ; i.x++, i.y--)
+                {
+                    var reserved = grid.Get(i);
+                    bool check = visitedCell.TryGetValue(i, out _);
+                    if (!check && reserved == null)
+                    {
+                        queue.Enqueue(i);
+                        history.Add(i, currentCell);
+                        visitedCell.Add(i, true);
+                    }
+                    if (i == dr)
+                    {
+                        break;
+                    }
+                }
+            }
+            return RecoveryPath(recovery, history, from);
         }
 
         public List<Vector2Int> FindPath(ChessUnitType unit, Vector2Int from, Vector2Int to, ChessGrid grid)
